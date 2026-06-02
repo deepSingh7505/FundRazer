@@ -21,7 +21,7 @@ export const authoptions = NextAuth({
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-     if(account.provider == "github" || account.provider == "google")
+     if(account.provider == "github" )
      {
        console.log("database connecting");
        const client = await mongoose.connect(process.env.MGDB);

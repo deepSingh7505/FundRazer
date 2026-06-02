@@ -2,12 +2,12 @@
 import React from 'react'
 import { useState } from 'react'
 import { useSession , signIn , signOut } from 'next-auth/react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { fetchuser , updateprofile } from '../actions/useractions'
 
 const Dashboard = () => {
-    const {data : session , update} = useSession()
-    const router = useRouter()
+    const {data : session } = useSession()
+    // const router = useRouter()
 
     const [form, setform] = useState({name:"", email:"",username:"",profilepicture:"",coverpicture:"",razorpayid:"",razorpaysecret:""})
     const handlechange = (e)=>{
@@ -15,17 +15,17 @@ const Dashboard = () => {
     }
   
 
-    const handlesubmit = async(e)=>{
-        update()
-        let a = updateprofile(e , session.user.name)
-        alert("profile updated")
-    }
+    // const handlesubmit = async(e)=>{
+    //     update()
+    //     let a = updateprofile(e , session.user.name)
+    //     alert("profile updated")
+    // }
 
   return (
     <main className='flex-1  flex flex-col items-center'>
         <h1 className=' my-5 font-bold text-2xl '>Welcome To Your Dashboard</h1>
        
-        <form className=' flex flex-col gap-3' onSubmit={handlesubmit}>
+        <form className=' flex flex-col gap-3' >
         <div>
             <p className='ml-1 font-bold'>Name </p>
             <input onChange={handlechange} className='bg-[#EEEEEE] text-black focus:outline-none w-[45vw] px-2 py-1 rounded-full ' value={form.name} type="text" name="name" id="" />

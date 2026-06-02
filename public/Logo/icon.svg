@@ -1,0 +1,99 @@
+<svg width="100%" viewBox="0 0 690 710" role="img" xmlns="http://www.w3.org/2000/svg" style="">
+  <title style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">A steaming cup of Indian chai</title>
+  <desc style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">Illustrated cup of masala chai with steam rising, on a saucer, warm amber and brown tones</desc>
+
+  <defs>
+    <linearGradient id="tableGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c8a87a"/>
+      <stop offset="100%" stop-color="#a07850"/>
+    </linearGradient>
+    <linearGradient id="saucerGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8d5b0"/>
+      <stop offset="100%" stop-color="#c8a87a"/>
+    </linearGradient>
+    <linearGradient id="cupBodyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f5e8d0"/>
+      <stop offset="100%" stop-color="#dfc49a"/>
+    </linearGradient>
+    <linearGradient id="chaiLiquid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c27a2e"/>
+      <stop offset="100%" stop-color="#8b4e18"/>
+    </linearGradient>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fdf6ec"/>
+      <stop offset="100%" stop-color="#f5e8d0"/>
+    </linearGradient>
+    <clipPath id="cupClip">
+      <path d="M230 310 Q228 490 240 510 Q280 540 340 540 Q400 540 440 510 Q452 490 450 310 Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background warm surface -->
+  <rect x="0" y="0" width="680" height="700" fill="url(#bgGrad)" style="stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Table surface -->
+  <ellipse cx="340" cy="590" rx="280" ry="40" fill="url(#tableGrad)" style="stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <rect x="60" y="590" width="560" height="110" fill="#a07850" style="fill:rgb(160, 120, 80);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Table edge highlight -->
+  <ellipse cx="340" cy="590" rx="280" ry="40" fill="none" stroke="#c8a87a" stroke-width="2" style="fill:none;stroke:rgb(200, 168, 122);color:rgb(255, 255, 255);stroke-width:2px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Saucer -->
+  <ellipse cx="340" cy="565" rx="155" ry="28" fill="url(#saucerGrad)" stroke="#b89060" stroke-width="1.5" style="stroke:rgb(184, 144, 96);color:rgb(255, 255, 255);stroke-width:1.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <ellipse cx="340" cy="562" rx="125" ry="18" fill="none" stroke="#c8a87a" stroke-width="1" style="fill:none;stroke:rgb(200, 168, 122);color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Cup body -->
+  <path d="M230 310 Q228 490 240 510 Q280 542 340 542 Q400 542 440 510 Q452 490 450 310 Z" fill="url(#cupBodyGrad)" stroke="#c8a060" stroke-width="2" style="stroke:rgb(200, 160, 96);color:rgb(255, 255, 255);stroke-width:2px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Cup inner shadow left -->
+  <path d="M240 310 Q240 460 248 500 Q265 530 300 538" fill="none" stroke="#d4aa70" stroke-width="6" stroke-linecap="round" opacity="0.3" style="fill:none;stroke:rgb(212, 170, 112);color:rgb(255, 255, 255);stroke-width:6px;stroke-linecap:round;stroke-linejoin:miter;opacity:0.3;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Chai liquid fill -->
+  <path d="M233 355 Q231 490 242 510 Q280 540 340 540 Q400 540 438 510 Q449 490 447 355 Z" fill="url(#chaiLiquid)" clip-path="url(#cupClip)" style="stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Chai surface shimmer -->
+  <ellipse cx="340" cy="355" rx="107" ry="18" fill="#d4841e" opacity="0.9" style="fill:rgb(212, 132, 30);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.9;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <ellipse cx="330" cy="352" rx="55" ry="7" fill="#e8a040" opacity="0.5" style="fill:rgb(232, 160, 64);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Spice dots on chai surface -->
+  <circle cx="310" cy="354" r="3" fill="#6b2d0a" opacity="0.7" style="fill:rgb(107, 45, 10);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.7;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <circle cx="355" cy="350" r="2.5" fill="#6b2d0a" opacity="0.6" style="fill:rgb(107, 45, 10);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.6;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <circle cx="370" cy="357" r="2" fill="#4a1e06" opacity="0.5" style="fill:rgb(74, 30, 6);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <circle cx="325" cy="360" r="1.5" fill="#7a3510" opacity="0.5" style="fill:rgb(122, 53, 16);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Cup rim -->
+  <ellipse cx="340" cy="310" rx="110" ry="22" fill="#e8d5b0" stroke="#c8a060" stroke-width="2" style="fill:rgb(232, 213, 176);stroke:rgb(200, 160, 96);color:rgb(255, 255, 255);stroke-width:2px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <ellipse cx="340" cy="308" rx="107" ry="18" fill="#d4c090" opacity="0.5" style="fill:rgb(212, 192, 144);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Handle -->
+  <path d="M450 360 Q520 360 520 420 Q520 480 450 475" fill="none" stroke="#dfc49a" stroke-width="22" stroke-linecap="round" style="fill:none;stroke:rgb(223, 196, 154);color:rgb(255, 255, 255);stroke-width:22px;stroke-linecap:round;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <path d="M450 360 Q520 360 520 420 Q520 480 450 475" fill="none" stroke="#c8a060" stroke-width="1.5" stroke-linecap="round" style="fill:none;stroke:rgb(200, 160, 96);color:rgb(255, 255, 255);stroke-width:1.5px;stroke-linecap:round;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <path d="M450 368 Q508 368 508 420 Q508 472 450 467" fill="none" stroke="#e8d5b0" stroke-width="8" stroke-linecap="round" opacity="0.5" style="fill:none;stroke:rgb(232, 213, 176);color:rgb(255, 255, 255);stroke-width:8px;stroke-linecap:round;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Cup decoration stripe -->
+  <path d="M234 400 Q231 420 232 440 Q280 460 340 460 Q400 460 448 440 Q449 420 446 400 Q400 418 340 418 Q280 418 234 400Z" fill="#c8903a" opacity="0.25" style="fill:rgb(200, 144, 58);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.25;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Steam wisps -->
+  <path d="M300 295 Q285 260 300 230 Q315 200 300 170" fill="none" stroke="#c8a87a" stroke-width="3.5" stroke-linecap="round" opacity="0.55" style="fill:none;stroke:rgb(200, 168, 122);color:rgb(255, 255, 255);stroke-width:3.5px;stroke-linecap:round;stroke-linejoin:miter;opacity:0.55;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <path d="M340 288 Q320 248 340 215 Q360 182 340 150" fill="none" stroke="#b89060" stroke-width="3.5" stroke-linecap="round" opacity="0.5" style="fill:none;stroke:rgb(184, 144, 96);color:rgb(255, 255, 255);stroke-width:3.5px;stroke-linecap:round;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <path d="M378 295 Q395 258 378 228 Q361 198 378 168" fill="none" stroke="#c8a87a" stroke-width="3.5" stroke-linecap="round" opacity="0.55" style="fill:none;stroke:rgb(200, 168, 122);color:rgb(255, 255, 255);stroke-width:3.5px;stroke-linecap:round;stroke-linejoin:miter;opacity:0.55;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Thinner wisp overlays for depth -->
+  <path d="M318 290 Q303 258 318 228" fill="none" stroke="#e8d0a0" stroke-width="1.5" stroke-linecap="round" opacity="0.4" style="fill:none;stroke:rgb(232, 208, 160);color:rgb(255, 255, 255);stroke-width:1.5px;stroke-linecap:round;stroke-linejoin:miter;opacity:0.4;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <path d="M362 290 Q377 258 362 228" fill="none" stroke="#e8d0a0" stroke-width="1.5" stroke-linecap="round" opacity="0.4" style="fill:none;stroke:rgb(232, 208, 160);color:rgb(255, 255, 255);stroke-width:1.5px;stroke-linecap:round;stroke-linejoin:miter;opacity:0.4;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Small spice star / cardamom near saucer -->
+  <g transform="translate(205,555)" style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
+    <circle r="7" fill="#8b4e18" style="fill:rgb(139, 78, 24);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+    <line x1="0" y1="-10" x2="0" y2="10" stroke="#f5dfa0" stroke-width="1.2" style="fill:rgb(0, 0, 0);stroke:rgb(245, 223, 160);color:rgb(255, 255, 255);stroke-width:1.2px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+    <line x1="-10" y1="0" x2="10" y2="0" stroke="#f5dfa0" stroke-width="1.2" style="fill:rgb(0, 0, 0);stroke:rgb(245, 223, 160);color:rgb(255, 255, 255);stroke-width:1.2px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+    <line x1="-7" y1="-7" x2="7" y2="7" stroke="#f5dfa0" stroke-width="1.2" style="fill:rgb(0, 0, 0);stroke:rgb(245, 223, 160);color:rgb(255, 255, 255);stroke-width:1.2px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+    <line x1="7" y1="-7" x2="-7" y2="7" stroke="#f5dfa0" stroke-width="1.2" style="fill:rgb(0, 0, 0);stroke:rgb(245, 223, 160);color:rgb(255, 255, 255);stroke-width:1.2px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+    <circle r="3" fill="#f5dfa0" style="fill:rgb(245, 223, 160);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  </g>
+
+  <!-- Cinnamon stick on saucer -->
+  <rect x="380" y="552" width="80" height="9" rx="4" fill="#7a3c10" transform="rotate(-12, 420, 556)" style="fill:rgb(122, 60, 16);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <rect x="382" y="554" width="76" height="3" rx="2" fill="#a05520" opacity="0.5" transform="rotate(-12, 420, 556)" style="fill:rgb(160, 85, 32);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+</svg>

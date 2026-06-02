@@ -4,7 +4,6 @@ import Script from 'next/script'
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useEffect, useState } from "react"
 import { fetchPayment, initiate, fetchuser } from '../actions/useractions'
-import { isAwaitKeyword } from 'typescript'
 
 const Paymentpage = ({ username }) => {
 
@@ -29,7 +28,7 @@ const Paymentpage = ({ username }) => {
 
 
     const getData = async () => {
-        let u = await fetchuser(username)
+       let u = await fetchuser(username)
         setcurrentUser(u)
         let dbpayment = await fetchPayment(username)
         setPayments(dbpayment)
@@ -48,13 +47,13 @@ const Paymentpage = ({ username }) => {
             "currency": "INR",
             "name": "Get Me a chai", //your business name
             "description": "Test Transaction",
-            "image": "https://example.com/your_logo",
+            "image": "Get-Me-A-Chai-Logo.svg",
             "order_id": orderid, // This is a sample Order ID. Pass the `id` obtained in the response of Step 1
             "callback_url": `${process.env.NEXT_PUBLIC_PAYMENT_URL}/api/razorpay`,
             "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
                 "name": "Deep Singh", //your customer's name
                 "email": "deepsingh7505@gmail.com",
-                "contact": "+919516351206" //Provide the customer's phone number for better conversion rates 
+                "contact": "+917505383706" //Provide the customer's phone number for better conversion rates 
             },
             "notes": {
                 "address": "Razorpay Corporate Office"
@@ -101,8 +100,8 @@ const Paymentpage = ({ username }) => {
                             <ul className=' flex flex-col gap-2 mt-3 '>
 
                                 <li className='border border-slate-500 py-2 rounded-xl px-2'>DeepSingh donated 1000$ and say "good luck"</li>
-                               {Payments.map((e)=>{
-                               return <li key={e._id} className='border border-slate-500 py-2 rounded-xl px-2'>{`${e.name} donated ${e.amount} and say "${e.message}"`}</li>
+                               {Payments.map((e)=>{ 
+                              return e.done?<li key={e._id} className='border border-slate-500 py-2 rounded-xl px-2'>{`${e.name} donated ${e.amount} and say "${e.message}"`}</li>:null
                                })}
                                </ul>
                         </div>
