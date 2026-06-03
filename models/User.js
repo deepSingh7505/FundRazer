@@ -4,8 +4,10 @@ const Userschema = new mongoose.Schema({
     name:{type:String , },
     email:{type:String ,required : true},
     username:{type:String , required : true },
-    porfilepicture:{type:String , },
+    profilepicture:{type:String , },
     coverpicture:{type:String ,  },
+    razorpayid: { type: String },
+    razorpaysecret: { type: String }, 
     createdAt:{type:Date , default:Date.now},
     updateAt:{type:Date , default:Date.now},
 });
