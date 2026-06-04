@@ -4,6 +4,8 @@ import { useState ,useEffect } from 'react'
 import { useSession , signIn , signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { fetchuser , updateprofile } from '../actions/useractions'
+import { ToastContainer, toast } from 'react-toastify';
+import { Bounce } from 'react-toastify'
 
 const Dashboard = () => {
     const {data : session  , update ,status} = useSession()
@@ -28,7 +30,18 @@ const Dashboard = () => {
     const handlesubmit = async(e)=>{
         update()
         let a = await updateprofile(e , session.user.name)
-        alert("profile updated")
+       toast.success('User Info Updated !', {
+position: "bottom-right",
+autoClose: 1998,
+hideProgressBar: false,
+closeOnClick: false,
+pauseOnHover: true,
+draggable: true,
+progress: undefined,
+theme: "dark",
+transition: Bounce,
+});
+
     }
     const getData = async () =>{
         let u = await fetchuser(session.user.name)
@@ -44,6 +57,19 @@ const Dashboard = () => {
     })
     }
   return (
+    <>
+    <ToastContainer
+position="bottom-right"
+autoClose={1998}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick={false}
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="dark"
+/>
     <main className='flex-1  flex flex-col items-center'>
         <h1 className=' my-5 font-bold text-2xl '>Welcome To Your Dashboard</h1>
        
@@ -80,6 +106,7 @@ const Dashboard = () => {
         <button type='submit' className='text-white bg-gradient-to-br cursor-pointer from-purple-600 to-blue-500 hover:bg-gradient-to-bl dark:focus:ring-blue-800 font-medium rounded-base text-sm px-4 py-2.5 my-3 text-center leading-5' >Submit</button>
         </form>
     </main>
+    </>
   )
 }
 

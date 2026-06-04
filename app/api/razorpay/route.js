@@ -4,6 +4,7 @@ import payment from "../../../models/payment";
 import Razorpay from "razorpay";
 import mongoose from "mongoose";
 import { NEXT_CACHE_IMPLICIT_TAG_ID } from "next/dist/lib/constants";
+import User from "../../../models/User";
 
 export const POST = async (req) =>{
     await mongoose.connect(process.env.MGDB)
@@ -16,8 +17,10 @@ export const POST = async (req) =>{
     {
         return NextResponse.json({success : false , message :"Order Id Not found" })
     }
+     let day_user =await User.findOne({username : p.to_user})     
+    const secret = day_user.razorpaysecret
     let xx = validatePaymentVerification({"order_id" : body.razorpay_order_id , "payment_id" : body.razorpay_payment_id }, body.razorpay_signature ,
-        process.env.RAZORPAY_SECRET)
+        secret)
 
         if(xx){
             //update payment

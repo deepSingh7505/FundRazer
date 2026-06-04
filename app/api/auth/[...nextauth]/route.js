@@ -33,7 +33,7 @@ export const authOptions = {
       await mongoose.connect(process.env.MGDB)
       const dbuser = await User.findOne({ email: session.user.email })
       if (dbuser) {
-        session.user.name = dbuser.username  // ✅ safe null check
+        session.user.name = dbuser.username  //  safe null check
       }
       return session
     }

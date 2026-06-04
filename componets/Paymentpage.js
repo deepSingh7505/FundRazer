@@ -4,36 +4,67 @@ import Script from 'next/script'
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useEffect, useState } from "react"
 import { fetchPayment, initiate, fetchuser } from '../actions/useractions'
+import useAuthRedirect from '../hooks/useAuthRedirect'
+import { useSearchParams } from 'next/navigation'
+import { ToastContainer, toast } from 'react-toastify';
+import { useRouter } from 'next/navigation'
 
 const Paymentpage = ({ username }) => {
 
-    const { data: session } = useSession()
+
     const [profile, setprofile] = useState("banner/profile.png")
+    const [banner, setbanner] = useState("banner/cfw.jpg")
     const [currentUser, setcurrentUser] = useState({})
     const [Payments, setPayments] = useState([])
-    const [paymentform, setpaymentform] = useState({
-        name: "", message: "", amount: ""
-    })
-
+    const [paymentform, setpaymentform] = useState({ name: "", message: "", amount: "" })
+    const searchParams = useSearchParams()
+    const router = useRouter()
 
     useEffect(() => {
-        if (session) {
-            setprofile(session.user.image)
+        if (searchParams.get("paymentdone") == "true") {
+            
+            toast.success('Thanks For Donation !', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+            router.push(`${username}`)
         }
-    }, [session])
-    useEffect(() => {
-        getData()
 
     }, [])
 
 
+    const { session, status } = useAuthRedirect()
+    useEffect(() => {
+        if (status !== "authenticated") return  // guard
+        getData()
+    }, [status])
+
+    
+    // useEffect(() => {
+
+    //     if (session) {
+    //         setprofile(currentUser.profilepicture)
+    //         setbanner(currentUser.coverpicture)
+    //     }
+    // }, [session])
+
+    // useEffect(() => {
+    //     getData()
+
+    // }, [])
+
+
     const getData = async () => {
-       let u = await fetchuser(username)
+        let u = await fetchuser(username)
         setcurrentUser(u)
         let dbpayment = await fetchPayment(username)
         setPayments(dbpayment)
-        console.log(dbpayment);
-        
     }
 
     const pay = async (amount) => {
@@ -42,7 +73,7 @@ const Paymentpage = ({ username }) => {
         let orderid = a.id
         var options = {
 
-            "key": process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
+            "key": currentUser.razorpayid, // Enter the Key ID generated from the Dashboard
             "amount": amount, // Amount is in currency subunits. 
             "currency": "INR",
             "name": "Get Me a chai", //your business name
@@ -77,10 +108,22 @@ const Paymentpage = ({ username }) => {
 
     return (
         <>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+            />
             <Script src="https://checkout.razorpay.com/v1/checkout.js"></Script>
             <main className='flex-1'>
                 <div className='w-full relative'>
-                    <img className='w-full max-h-[min(400px,50vh)]  object-fit' src="banner/cfw.jpg" alt="" />
+                    <img className='w-full max-h-[min(400px,50vh)]  object-fit' src={banner} alt="" />
                     <div className='border-2 border-black rounded-full absolute bottom-[-50] left-[46%]'>
                         <img width={100} height={100} className=' rounded-full' src={profile} alt="" />
                     </div>
@@ -93,17 +136,17 @@ const Paymentpage = ({ username }) => {
                     <div>Creating Animated art for VTT's
                     </div>
 
-                    <div>25,556 members &bull; 110 posts &bull; $17,550/release</div>
+                    <div>{Payments.length} Number Donation  &bull; 110 posts &bull; $17,550/release</div>
                     <div className='paymet flex w-[80%] gap-4'>
                         <div className='supporters  w-1/2 bg-slate-700 p-4 rounded-xl  overflow-auto max-h-[342px]'>
                             <h1 className='font-bold text-2xl'>Supporters - </h1>
                             <ul className=' flex flex-col gap-2 mt-3 '>
 
                                 <li className='border border-slate-500 py-2 rounded-xl px-2'>DeepSingh donated 1000$ and say "good luck"</li>
-                               {Payments.map((e)=>{ 
-                              return e.done?<li key={e._id} className='border border-slate-500 py-2 rounded-xl px-2'>{`${e.name} donated ${e.amount} and say "${e.message}"`}</li>:null
-                               })}
-                               </ul>
+                                {Payments.map((e) => {
+                                    return e.done ? <li key={e._id} className='border border-slate-500 py-2 rounded-xl px-2'>{`${e.name} donated ${e.amount} and say "${e.message}"`}</li> : null
+                                })}
+                            </ul>
                         </div>
                         <div className='make payment  w-1/2 bg-slate-700 p-4 rounded-xl  flex flex-col items-center '>
                             <h1 className='font-bold text-2xl'>Your Message And Payment </h1>
@@ -111,7 +154,8 @@ const Paymentpage = ({ username }) => {
                                 <input onChange={handlechange} className='bg-white text-black w-full  py-1 px-3 focus:outline-none my-2 rounded-xl ' placeholder='Enter Your Full Name' type="text" value={paymentform.name} name="name" id="" />
                                 <input onChange={handlechange} className='bg-white text-black w-full  py-1 px-3 focus:outline-none my-2 rounded-xl ' placeholder='Enter Your Message' type="text" value={paymentform.message} name="message" id="" />
                                 <input onChange={handlechange} className='bg-white text-black w-full  py-1 px-3 focus:outline-none my-2 rounded-xl ' placeholder='Enter Amount' type="number" value={paymentform.amount} name="amount" id="" />
-                                <button onClick={() => handlepay(paymentform.amount)} className='text-white bg-gradient-to-br cursor-pointer from-purple-600 to-blue-500 hover:bg-gradient-to-bl dark:focus:ring-blue-800 font-medium rounded-base text-sm px-4 py-2.5 my-3 text-center leading-5 w-full'>Pay</button>
+                                <button onClick={() => handlepay(paymentform.amount)} className='text-white bg-gradient-to-br cursor-pointer from-purple-600 to-blue-500 hover:bg-gradient-to-bl dark:focus:ring-blue-800 font-medium rounded-base text-sm px-4 py-2.5 my-3 text-center leading-5 w-full 
+                                disabled:bg-slate-700 disabled:from-slate-600 ' disabled={paymentform.name?.length < 3 || paymentform.message?.length < 5}>Pay</button>
                             </div>
                             <div className='mb-[5px] '>or</div>
                             <div className="options w-full px-1 flex justify-center gap-4 overflow-auto">
