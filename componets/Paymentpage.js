@@ -138,8 +138,9 @@ const Paymentpage = ({ username }) => {
       key: currentUser.razorpayid,
       amount: order.amount,
       currency: order.currency,
-      name: "FundRazer",
-      description: `Support ${username}`,
+     name: currentUser?.name || "FundRazer",
+description: `Support ${username}`,
+image: currentUser?.profilepicture || "/banner/profile.png",
       order_id: order.id,
       prefill: {
         name: updatedForm.name,
