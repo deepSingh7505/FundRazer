@@ -135,7 +135,7 @@ const Paymentpage = ({ username }) => {
     }
 
     const options = {
-      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+      key: currentUser.razorpayid,
       amount: order.amount,
       currency: order.currency,
       name: "FundRazer",
@@ -239,6 +239,11 @@ const Paymentpage = ({ username }) => {
             </div>
         )
     }
+    const totalEarnings = useMemo(() => {
+  return payments.reduce((total, payment) => {
+    return total + Number(payment.amount || 0)
+  }, 0)
+}, [payments])
 
     return (
         <>
@@ -282,9 +287,10 @@ const Paymentpage = ({ username }) => {
                                 <p className="mt-2 max-w-2xl text-sm text-slate-300 sm:text-base">
                                     {currentUser?.bio || "Support this creator and help their work reach more people."}
                                 </p>
-                                <p className="mt-3 text-sm text-slate-400">
-                                    {payments.length} donations received
-                                </p>
+                                <div className="mt-3 space-y-1 text-sm text-slate-400">
+  <p>{payments.length} donations received</p>
+  <p>Total earnings: <span className="font-semibold text-green-400">₹{totalEarnings}</span></p>
+</div>
                             </div>
                         </div>
                     </div>

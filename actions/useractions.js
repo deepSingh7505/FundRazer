@@ -50,7 +50,6 @@ export const fetchuser = async (username) => {
 
   const u = await User.findOne({ username }).lean()
   if (!u) return null
-
   return {
     ...u,
     _id: u._id.toString(),

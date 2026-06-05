@@ -181,7 +181,7 @@ const Navbar = () => {
                       onClick={() => setshowdrop(false)}
                       className="hover:bg-slate-400 inline-flex items-center w-full p-2 rounded"
                     >
-                      Dashboard
+                      Edit Profile
                     </Link>
                   </li>
 
