@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#9B5CF6"/>
+      <stop offset="100%" stop-color="#38BDF8"/>
+    </linearGradient>
+    <linearGradient id="bg1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+  </defs>
+  <!-- Background rounded square -->
+  <rect x="0" y="0" width="512" height="512" rx="96" fill="url(#bg1)"/>
+  <!-- F vertical bar -->
+  <rect x="118" y="100" width="66" height="312" rx="12" fill="url(#g1)"/>
+  <!-- F top horizontal bar -->
+  <rect x="118" y="100" width="218" height="66" rx="12" fill="url(#g1)"/>
+  <!-- F middle horizontal bar -->
+  <rect x="118" y="224" width="172" height="58" rx="12" fill="url(#g1)" opacity="0.85"/>
+  <!-- Razor slash accent -->
+  <polygon points="248,412 300,282 328,282 276,412" fill="url(#g1)" opacity="0.75"/>
+</svg>

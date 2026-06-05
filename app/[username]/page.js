@@ -1,21 +1,10 @@
 import React from 'react'
 import Paymentpage from '../../componets/Paymentpage';
-import User from '../../models/User';
-import mongoose from 'mongoose';
-import { notFound } from 'next/navigation';
+
 
 const Username = async({ params }) => {
   const { username } = await params; 
-  const cheakuser = async()=>{
- await mongoose.connect(process.env.MGDB)
- let u = await User.findOne({username : username})
- if(!u)
- {
-   return notFound()
- }
-
-}
-await cheakuser()
+  
 
 
 return (
@@ -26,3 +15,8 @@ return (
 }
 
 export default Username
+
+export const metadata = {
+  title: "Support Creator | FundRazer",
+  description: "Send support and donations to your favorite creators on FundRazer.",
+}

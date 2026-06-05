@@ -1,12 +1,12 @@
-import React from 'react'
+import React from "react"
 
 const Footer = () => {
   return (
-   <>
-   <div className="bg-slate-900 flex justify-center items-center text-white w-full">
-  <p>No Copyright are Reserved &copy; || Deep Singh</p>
-</div>
-    </>
+    <footer className="bg-slate-900 text-white py-4 border-t border-white/10">
+      <div className="max-w-6xl mx-auto px-4 text-center text-sm text-slate-300">
+        © {new Date().getFullYear()} FundRazer || Built by Deep Singh
+      </div>
+    </footer>
   )
 }
 

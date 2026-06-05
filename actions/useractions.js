@@ -1,80 +1,175 @@
 "use server"
+
 import Razorpay from "razorpay"
 import Payment from "../models/payment"
-import mongoose from "mongoose"
 import User from "../models/User"
-import payment from "../models/payment"
-import { error } from "node:console"
-
+import connectDB from "@/lib/mongodb"
 
 export const initiate = async (amount, to_username, paymentform) => {
-    await mongoose.connect(process.env.MGDB)
+  await connectDB()
 
+  const user = await User.findOne({ username: to_username }).lean()
+  if (!user) {
+    return { error: "User not found" }
+  }
 
-    //Get razorpay id from database
-    let deyuser = await User.findOne({username : to_username})
-    const dey_id = deyuser.razorpayid
-    const dey_secret = deyuser.razorpaysecret
-    //create a instance || ye order ka instance bna rha hai 
-    var instance = new Razorpay({ key_id: dey_id, key_secret: dey_secret })
+  if (!user.razorpayid || !user.razorpaysecret) {
+    return { error: "Receiver Razorpay account is not configured" }
+  }
 
+  const amountInPaise = Number(amount)
+  if (!Number.isFinite(amountInPaise) || amountInPaise <= 0) {
+    return { error: "Invalid amount" }
+  }
 
-    let options = {
-        amount : Number.parseInt(amount),
-        currency : "INR",
-    }
+  const instance = new Razorpay({
+    key_id: user.razorpayid,
+    key_secret: user.razorpaysecret,
+  })
 
-    //ye order lekre success or failure return krega and 
-    //success k andar id hogi order ki 
-    let x = await instance.orders.create(options);
+  const options = {
+    amount: amountInPaise,
+    currency: "INR",
+  }
 
-    // a payment object for pending orders in database
-    await Payment.create({oid : x.id , amount :amount/100 , to_user : to_username , name : paymentform.name , message : paymentform.message})
-    //jub bhi initiate ko bulaoge tho given (amount , username , paymmentform ) k liye success ya failure return krega 
-    return x ;
+  const order = await instance.orders.create(options)
 
+  await Payment.create({
+    oid: order.id,
+    amount: amountInPaise / 100,
+    to_user: to_username,
+    name: paymentform?.name || "",
+    message: paymentform?.message || "",
+  })
+
+  return order
 }
 
-export const  fetchuser  = async (username)=>{
-    
-    let data = await mongoose.connect(process.env.MGDB)
-    let u = await User.findOne({username: username}).lean()
-    if(u)
-    {
-        return {...u , _id : u._id.toString()};
-    }
+export const fetchuser = async (username) => {
+  await connectDB()
 
-    
+  const u = await User.findOne({ username }).lean()
+  if (!u) return null
+
+  return {
+    ...u,
+    _id: u._id.toString(),
+  }
 }
 
-export const fetchPayment = async (username)=>{
-    
-        let data = await mongoose.connect(process.env.MGDB)
-        let p = await Payment.find({to_user : username}).sort({amount : -1}).lean()
-        return p.map(doc => ({ ...doc, _id: doc._id.toString() }))
+export const fetchPayment = async (username) => {
+  await connectDB()
+
+  const payments = await Payment.find({ to_user: username  , done: true} )
+    .sort({ amount: -1 })
+    .lean()
+
+  return payments.map((doc) => ({
+    ...doc,
+    _id: doc._id.toString(),
+  }))
 }
 
-export const updateprofile = async(data , oldusername)=>{
-    await mongoose.connect(process.env.MGDB)
-    let ndata = Object.fromEntries(data)
 
-    //If username change krna hai tho cheak kro username phele se tho nhi hai
-    if(oldusername !== ndata.username) // cheak kr rha hai ki same username hai kiya new == old ??
-    {
-        let u = await User.findOne({username : ndata.username}) //cheak kr rha kisi or nai username tho nhi le rhka phele se ?
-        if(u)
-        {
-            return {error : "Username Already Taken !"} // if phelese le le rkha ho 
-        }
-        else{
-            //also update dashboard details 
-            await User.updateOne({email : ndata.email} , ndata)
-            // old username and new username same nhi hai tho payment update kro
-           await Payment.updateMany({to_user : oldusername} , {to_user : ndata.username})
-        }
-    }else{
-        await User.updateOne({email : ndata.email} , ndata) // old username and new username same hai tho koi payment udpdate nhi krni
+export const updateprofile = async (data, oldusername) => {
+  await connectDB()
+
+  const ndata = data instanceof FormData ? Object.fromEntries(data) : data
+
+  if (!ndata?.email || !ndata?.username) {
+    return { error: "Email and username are required" }
+  }
+
+  const currentUser = await User.findOne({ email: ndata.email }).lean()
+  if (!currentUser) {
+    return { error: "User not found" }
+  }
+
+  if (oldusername !== ndata.username) {
+    const existingUser = await User.findOne({ username: ndata.username }).lean()
+
+    if (existingUser) {
+      return { error: "Username Already Taken!" }
     }
-  
-    
+
+    await User.updateOne(
+      { email: ndata.email },
+      {
+        $set: {
+          name: ndata.name,
+          username: ndata.username,
+          profilepicture: ndata.profilepicture,
+          coverpicture: ndata.coverpicture,
+          razorpayid: ndata.razorpayid,
+          razorpaysecret: ndata.razorpaysecret,
+        },
+      }
+    )
+
+    await Payment.updateMany(
+      { to_user: oldusername },
+      { $set: { to_user: ndata.username } }
+    )
+  } else {
+    await User.updateOne(
+      { email: ndata.email },
+      {
+        $set: {
+          name: ndata.name,
+          username: ndata.username,
+          profilepicture: ndata.profilepicture,
+          coverpicture: ndata.coverpicture,
+          razorpayid: ndata.razorpayid,
+          razorpaysecret: ndata.razorpaysecret,
+        },
+      }
+    )
+  }
+
+  const updatedUser = await User.findOne({ email: ndata.email }).lean()
+
+  return {
+    success: true,
+    user: {
+      ...updatedUser,
+      _id: updatedUser._id.toString(),
+    },
+  }
+}
+
+export const searchusers = async (query) => {
+  await connectDB()
+
+  if (!query || query.trim().length < 2) return []
+
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+
+  const users = await User.find({
+    username: { $regex: escaped, $options: "i" },
+  })
+    .select("username profilepicture")
+    .limit(8)
+    .lean()
+
+  return users.map((user) => ({
+    ...user,
+    _id: user._id.toString(),
+  }))
+}
+
+
+export const markPaymentDone = async (oid) => {
+  try {
+    await connectDB()
+
+    await Payment.findOneAndUpdate(
+      { oid: oid },
+      { done: true },
+      { new: true }
+    )
+
+    return { success: true }
+  } catch (error) {
+    return { success: false }
+  }
 }

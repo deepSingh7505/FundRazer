@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" width="900" height="300">
+  <defs>
+    <linearGradient id="iconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#9B5CF6"/>
+      <stop offset="100%" stop-color="#38BDF8"/>
+    </linearGradient>
+    <linearGradient id="fundGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#818CF8"/>
+      <stop offset="100%" stop-color="#60A5FA"/>
+    </linearGradient>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A0F1E"/>
+      <stop offset="100%" stop-color="#0D1526"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="300" fill="url(#bgGrad)"/>
+
+  <!-- === ICON: Stylized F === centered group starts at x=82 -->
+  <g transform="translate(82, 90)">
+    <!-- Vertical bar -->
+    <rect x="0" y="0" width="20" height="120" rx="4" fill="url(#iconGrad)"/>
+    <!-- Top bar -->
+    <rect x="0" y="0" width="80" height="20" rx="4" fill="url(#iconGrad)"/>
+    <!-- Middle bar -->
+    <rect x="0" y="50" width="62" height="17" rx="4" fill="url(#iconGrad)" opacity="0.85"/>
+    <!-- Razor slash accents -->
+    <polygon points="66,120 88,68 98,68 76,120" fill="url(#iconGrad)" opacity="0.75"/>
+    <polygon points="84,120 106,68 116,68 94,120" fill="url(#iconGrad)" opacity="0.45"/>
+  </g>
+
+  <!-- === WORDMARK === -->
+  <!-- FUND -->
+  <text x="222" y="182" font-family="Georgia, 'Times New Roman', serif" font-size="96" font-weight="700" letter-spacing="-3" fill="url(#fundGrad)">FUND</text>
+  <!-- RAZER -->
+  <text x="522" y="182" font-family="Georgia, 'Times New Roman', serif" font-size="96" font-weight="700" letter-spacing="-3" fill="#F8FAFC">RAZER</text>
+
+  <!-- Underline accent -->
+  <rect x="222" y="196" width="660" height="3" rx="1.5" fill="url(#iconGrad)" opacity="0.35"/>
+
+  <!-- Tagline -->
+  <text x="222" y="232" font-family="Georgia, 'Times New Roman', serif" font-size="16" letter-spacing="5" fill="#64748B">CROWDFUND WITH PURPOSE</text>
+</svg>

@@ -1,116 +1,250 @@
 "use client"
-import React from 'react'
-import Script from 'next/script'
-import { useSession, signIn, signOut } from "next-auth/react"
-import { useEffect, useState } from "react"
-import { fetchPayment, initiate, fetchuser } from '../actions/useractions'
-import useAuthRedirect from '../hooks/useAuthRedirect'
-import { useSearchParams } from 'next/navigation'
-import { ToastContainer, toast } from 'react-toastify';
-import { useRouter } from 'next/navigation'
+import React, { useEffect, useMemo, useState } from "react"
+import Script from "next/script"
+import Link from "next/link"
+import { fetchPayment, initiate, fetchuser, markPaymentDone } from "../actions/useractions"
+import { useSearchParams, useRouter } from "next/navigation"
+import { ToastContainer, toast } from "react-toastify"
+
 
 const Paymentpage = ({ username }) => {
-
-
-    const [profile, setprofile] = useState("banner/profile.png")
-    const [banner, setbanner] = useState("banner/cfw.jpg")
+    const [profile, setprofile] = useState("/banner/profile.png")
+    const [banner, setbanner] = useState("/banner/cfw.jpg")
     const [currentUser, setcurrentUser] = useState({})
-    const [Payments, setPayments] = useState([])
-    const [paymentform, setpaymentform] = useState({ name: "", message: "", amount: "" })
+    const [payments, setpayments] = useState([])
+    const [loading, setloading] = useState(true)
+    const [notFound, setNotFound] = useState(false)
+    const [paying, setpaying] = useState(false)
+
+    const [paymentform, setpaymentform] = useState({
+        name: "",
+        email: "",
+        mobile: "",
+        message: "",
+        amount: "",
+    })
+
     const searchParams = useSearchParams()
     const router = useRouter()
 
     useEffect(() => {
-        if (searchParams.get("paymentdone") == "true") {
-            
-            toast.success('Thanks For Donation !', {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
-            router.push(`${username}`)
+        if (searchParams.get("paymentdone") === "true") {
+            router.push(`/${username}`)
         }
+    }, [searchParams, router, username])
 
-    }, [])
-
-
-    const { session, status } = useAuthRedirect()
     useEffect(() => {
-        if (status !== "authenticated") return  // guard
         getData()
-    }, [status])
-
-    
-    // useEffect(() => {
-
-    //     if (session) {
-    //         setprofile(currentUser.profilepicture)
-    //         setbanner(currentUser.coverpicture)
-    //     }
-    // }, [session])
-
-    // useEffect(() => {
-    //     getData()
-
-    // }, [])
-
+    }, [username])
 
     const getData = async () => {
-        let u = await fetchuser(username)
-        setcurrentUser(u)
-        let dbpayment = await fetchPayment(username)
-        setPayments(dbpayment)
-    }
+        try {
+            setloading(true)
 
-    const pay = async (amount) => {
-        //get order id , ye initiate ko invoke kr rha ho given data k liye success or failure responce receive krega 
-        let a = await initiate(amount, username, paymentform)
-        let orderid = a.id
-        var options = {
-
-            "key": currentUser.razorpayid, // Enter the Key ID generated from the Dashboard
-            "amount": amount, // Amount is in currency subunits. 
-            "currency": "INR",
-            "name": "Get Me a chai", //your business name
-            "description": "Test Transaction",
-            "image": "Get-Me-A-Chai-Logo.svg",
-            "order_id": orderid, // This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-            "callback_url": `${process.env.NEXT_PUBLIC_PAYMENT_URL}/api/razorpay`,
-            "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
-                "name": "Deep Singh", //your customer's name
-                "email": "deepsingh7505@gmail.com",
-                "contact": "+917505383706" //Provide the customer's phone number for better conversion rates 
-            },
-            "notes": {
-                "address": "Razorpay Corporate Office"
-            },
-            "theme": {
-                "color": "#3399cc"
+            const u = await fetchuser(username)
+            if (!u) {
+                setNotFound(true)
+                return
             }
-        };
-        var rzp1 = new Razorpay(options);
-        rzp1.open();
+
+            setcurrentUser(u)
+            setprofile(u.profilepicture || "/banner/profile.png")
+            setbanner(u.coverpicture || "/banner/cfw.jpg")
+
+            const dbpayment = await fetchPayment(username)
+            setpayments(dbpayment || [])
+        } catch (error) {
+            toast.error("Failed to load creator page.", {
+                position: "bottom-right",
+                autoClose: 3000,
+                theme: "dark",
+            })
+        } finally {
+            setloading(false)
+        }
     }
 
-    const handlechange = (e) => {
-        setpaymentform({ ...paymentform, [e.target.name]: e.target.value })
+    const validatePaymentForm = (customAmount = null) => {
+  const name = paymentform.name.trim()
+  const message = paymentform.message.trim()
+  const email = paymentform.email.trim()
+  const mobile = paymentform.mobile.trim()
+  const amount = customAmount ?? Number(paymentform.amount)
+
+  if (name.length < 4) return "Name must be at least 4 characters long."
+  if (message.length < 5) return "Message must be at least 5 characters long."
+  if (!email.includes("@")) return "Please enter a valid email."
+  if (!/^\d{10}$/.test(mobile)) return "Number must be exactly 10 digits."
+  if (!Number.isFinite(amount)) return "Please enter a valid amount."
+  if (amount <= 5) return "Amount must be more than ₹5."
+  if (amount >= 25000) return "Amount must be less than ₹25000."
+
+  return null
+}
+
+
+   const handlechange = (e) => {
+  const { name, value } = e.target
+
+  if (name === "mobile") {
+    setpaymentform({
+      ...paymentform,
+      [name]: value.replace(/\D/g, "").slice(0, 10),
+    })
+    return
+  }
+
+  setpaymentform({
+    ...paymentform,
+    [name]: value,
+  })
+}
+
+
+   const pay = async (quickAmount) => {
+  const finalAmount = quickAmount ?? Number(paymentform.amount)
+  const errorMessage = validatePaymentForm(finalAmount)
+
+  if (errorMessage) {
+    toast.error(errorMessage, {
+      position: "bottom-right",
+      autoClose: 4000,
+      theme: "dark",
+    })
+    return
+  }
+
+  const updatedForm = {
+    ...paymentform,
+    amount: finalAmount,
+  }
+
+  try {
+    setpaying(true)
+
+    const order = await initiate(finalAmount * 100, username, updatedForm)
+
+    if (order?.error) {
+      toast.error(order.error, {
+        position: "bottom-right",
+        autoClose: 4000,
+        theme: "dark",
+      })
+      setpaying(false)
+      return
     }
 
-    const handlepay = (e) => {
-        const value = `${e}00`
-        pay(parseInt(value))
+    const options = {
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+      amount: order.amount,
+      currency: order.currency,
+      name: "FundRazer",
+      description: `Support ${username}`,
+      order_id: order.id,
+      prefill: {
+        name: updatedForm.name,
+        email: updatedForm.email,
+        contact: updatedForm.mobile,
+      },
+      notes: {
+        message: updatedForm.message,
+        creator: username,
+      },
+      theme: {
+        color: "#7c3aed",
+      },
+      handler: async function (response) {
+        try {
+          const res = await markPaymentDone(response.razorpay_order_id)
+
+          if (!res?.success) {
+            toast.error("Payment done but database update failed.", {
+              position: "bottom-right",
+              autoClose: 4000,
+              theme: "dark",
+            })
+            setpaying(false)
+            return
+          }
+
+          setpaying(false)
+          toast.success("Payment successful!", {
+            position: "bottom-right",
+            autoClose: 2000,
+            theme: "dark",
+          })
+          router.push(`/${username}?paymentdone=true`)
+        } catch (error) {
+          toast.error("Payment succeeded but saving failed.", {
+            position: "bottom-right",
+            autoClose: 4000,
+            theme: "dark",
+          })
+          setpaying(false)
+        }
+      },
+      modal: {
+        ondismiss: function () {
+          setpaying(false)
+        },
+      },
+    }
+
+    const rzp = new window.Razorpay(options)
+
+    rzp.on("payment.failed", function (response) {
+      toast.error(
+        response?.error?.description || "Payment failed. Please try again.",
+        {
+          position: "bottom-right",
+          autoClose: 4000,
+          theme: "dark",
+        }
+      )
+      setpaying(false)
+    })
+
+    rzp.open()
+  } catch (error) {
+    toast.error("Something went wrong while starting the payment.", {
+      position: "bottom-right",
+      autoClose: 4000,
+      theme: "dark",
+    })
+    setpaying(false)
+    console.error(error)
+  }
+}
+
+    const quickAmounts = [20, 50, 100, 500, 1000]
+
+    const isInvalid = useMemo(() => {
+        return !!validatePaymentForm()
+    }, [paymentform])
+
+    if (notFound) {
+        return (
+            <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-[#00091D] px-4 text-white text-center">
+                <div className="text-6xl font-bold">404</div>
+                <div className="text-2xl font-bold">User Not Found</div>
+                <p className="text-slate-400">
+                    No creator with username <span className="text-purple-400">@{username}</span> exists.
+                </p>
+                <Link
+                    href="/"
+                    className="mt-4 rounded-xl bg-purple-600 px-6 py-2 hover:bg-purple-700"
+                >
+                    Go Home
+                </Link>
+            </div>
+        )
     }
 
     return (
         <>
             <ToastContainer
                 position="bottom-right"
-                autoClose={2000}
+                autoClose={3000}
                 hideProgressBar={false}
                 newestOnTop={false}
                 closeOnClick={false}
@@ -120,56 +254,161 @@ const Paymentpage = ({ username }) => {
                 pauseOnHover
                 theme="dark"
             />
-            <Script src="https://checkout.razorpay.com/v1/checkout.js"></Script>
-            <main className='flex-1'>
-                <div className='w-full relative'>
-                    <img className='w-full max-h-[min(400px,50vh)]  object-fit' src={banner} alt="" />
-                    <div className='border-2 border-black rounded-full absolute bottom-[-50] left-[46%]'>
-                        <img width={100} height={100} className=' rounded-full' src={profile} alt="" />
-                    </div>
-                </div>
-                <div className='info flex flex-col items-center gap-4 p-13.75 bg-[#00091D]'>
 
-                    <div className='font-bold text-3xl'>{`${username}`} - Jules&Ben's Animated Assets
-                    </div>
+            <Script src="https://checkout.razorpay.com/v1/checkout.js" />
 
-                    <div>Creating Animated art for VTT's
-                    </div>
+            <main className="min-h-screen bg-[#00091D] text-white">
+                <section className="relative">
+                    <img
+                        className="h-[220px] w-full object-cover sm:h-[280px] md:h-[340px] lg:h-[420px]"
+                        src={banner}
+                        alt={`${username} cover`}
+                    />
 
-                    <div>{Payments.length} Number Donation  &bull; 110 posts &bull; $17,550/release</div>
-                    <div className='paymet flex w-[80%] gap-4'>
-                        <div className='supporters  w-1/2 bg-slate-700 p-4 rounded-xl  overflow-auto max-h-[342px]'>
-                            <h1 className='font-bold text-2xl'>Supporters - </h1>
-                            <ul className=' flex flex-col gap-2 mt-3 '>
+                    <div className="mx-auto max-w-6xl px-4 sm:px-6">
+                        <div className="relative -mt-14 flex flex-col items-center md:-mt-16 md:items-start">
+                            <img
+                                width={120}
+                                height={120}
+                                className="h-28 w-28 rounded-full border-4 border-[#00091D] object-cover shadow-xl sm:h-32 sm:w-32"
+                                src={profile}
+                                alt={`${username} profile`}
+                            />
 
-                                <li className='border border-slate-500 py-2 rounded-xl px-2'>DeepSingh donated 1000$ and say "good luck"</li>
-                                {Payments.map((e) => {
-                                    return e.done ? <li key={e._id} className='border border-slate-500 py-2 rounded-xl px-2'>{`${e.name} donated ${e.amount} and say "${e.message}"`}</li> : null
-                                })}
-                            </ul>
-                        </div>
-                        <div className='make payment  w-1/2 bg-slate-700 p-4 rounded-xl  flex flex-col items-center '>
-                            <h1 className='font-bold text-2xl'>Your Message And Payment </h1>
-                            <div className='flex flex-col  items-center justify-around w-full'>
-                                <input onChange={handlechange} className='bg-white text-black w-full  py-1 px-3 focus:outline-none my-2 rounded-xl ' placeholder='Enter Your Full Name' type="text" value={paymentform.name} name="name" id="" />
-                                <input onChange={handlechange} className='bg-white text-black w-full  py-1 px-3 focus:outline-none my-2 rounded-xl ' placeholder='Enter Your Message' type="text" value={paymentform.message} name="message" id="" />
-                                <input onChange={handlechange} className='bg-white text-black w-full  py-1 px-3 focus:outline-none my-2 rounded-xl ' placeholder='Enter Amount' type="number" value={paymentform.amount} name="amount" id="" />
-                                <button onClick={() => handlepay(paymentform.amount)} className='text-white bg-gradient-to-br cursor-pointer from-purple-600 to-blue-500 hover:bg-gradient-to-bl dark:focus:ring-blue-800 font-medium rounded-base text-sm px-4 py-2.5 my-3 text-center leading-5 w-full 
-                                disabled:bg-slate-700 disabled:from-slate-600 ' disabled={paymentform.name?.length < 3 || paymentform.message?.length < 5}>Pay</button>
-                            </div>
-                            <div className='mb-[5px] '>or</div>
-                            <div className="options w-full px-1 flex justify-center gap-4 overflow-auto">
-                                <button className='bg-[#3D3C41] p-3 rounded-xl cursor-pointer' onClick={() => pay(2000)}>+ 20₹</button>
-                                <button className='bg-[#3D3C41] p-3 rounded-xl cursor-pointer' onClick={() => pay(5000)}>+ 50₹</button>
-                                <button className='bg-[#3D3C41] p-3 rounded-xl cursor-pointer' onClick={() => pay(10000)}>+ 100₹</button>
+                            <div className="mt-4 text-center md:text-left">
+                                <h1 className="text-2xl font-bold sm:text-3xl md:text-4xl">
+                                    @{username}
+                                </h1>
+                                <p className="mt-2 max-w-2xl text-sm text-slate-300 sm:text-base">
+                                    {currentUser?.bio || "Support this creator and help their work reach more people."}
+                                </p>
+                                <p className="mt-3 text-sm text-slate-400">
+                                    {payments.length} donations received
+                                </p>
                             </div>
                         </div>
                     </div>
+                </section>
 
-                </div>
+                <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6 md:py-10">
+                    {loading ? (
+                        <div className="rounded-3xl border border-white/10 bg-slate-800/60 p-8 text-center text-slate-400">
+                            Loading creator page...
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                            <div className="rounded-3xl border border-white/10 bg-slate-800/70 p-5 shadow-lg sm:p-6">
+                                <h2 className="text-xl font-bold sm:text-2xl">Recent supporters</h2>
+                                <p className="mt-2 text-sm text-slate-400">
+                                    People who recently supported this creator.
+                                </p>
 
+                                <div className="mt-5 max-h-[420px] space-y-3 overflow-y-auto pr-1">
+                                    {payments.length === 0 ? (
+                                        <div className="rounded-2xl border border-dashed border-slate-600 p-5 text-sm text-slate-400">
+                                            No donations yet. Be the first supporter.
+                                        </div>
+                                    ) : (
+                                        payments.map((e) => (
+                                            <div
+                                                key={e._id}
+                                                className="rounded-2xl border border-slate-600 bg-slate-900/40 p-4"
+                                            >
+                                                <p className="text-sm sm:text-base">
+                                                    <span className="font-semibold text-white">{e.name}</span>{" "}
+                                                    donated <span className="font-semibold text-green-400">₹{e.amount}</span>
+                                                </p>
+                                                <p className="mt-1 text-sm text-slate-400">
+                                                    “{e.message || "Sent support"}”
+                                                </p>
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="rounded-3xl border border-white/10 bg-slate-800/70 p-5 shadow-lg sm:p-6">
+                                <h2 className="text-xl font-bold sm:text-2xl">Send your support</h2>
+                                <p className="mt-2 text-sm text-slate-400">
+                                    Leave a message and choose an amount to support this creator.
+                                </p>
+
+                                <div className="mt-5 space-y-4">
+                                    <input
+                                        onChange={handlechange}
+                                        className="w-full rounded-2xl bg-white px-4 py-3 text-black focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                        placeholder="Enter your full name"
+                                        type="text"
+                                        value={paymentform.name}
+                                        name="name"
+                                    />
+
+                                    <input
+                                        onChange={handlechange}
+                                        className="w-full rounded-2xl bg-white px-4 py-3 text-black focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                        placeholder="Enter your message"
+                                        type="text"
+                                        value={paymentform.message}
+                                        name="message"
+                                    />
+                                    <input
+                                        onChange={handlechange}
+                                        className="w-full rounded-2xl bg-white px-4 py-3 text-black focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                        placeholder="Enter email"
+                                        type="email"
+                                        value={paymentform.email}
+                                        name="email"
+                                    />
+
+                                    <input
+                                        onChange={handlechange}
+                                        className="w-full rounded-2xl bg-white px-4 py-3 text-black focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                        placeholder="Enter Mobile Number"
+                                        type="tel"
+                                        inputMode="numeric"
+                                        maxLength={10}
+                                        value={paymentform.mobile}
+                                        name="mobile"
+                                    />
+                                    <input
+                                        onChange={handlechange}
+                                        className="w-full rounded-2xl bg-white px-4 py-3 text-black  focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                        placeholder="Enter amount"
+                                        type="number"
+                                        value={paymentform.amount}
+                                        name="amount"
+                                        min="6"
+                                        max="24999"
+                                    />
+
+
+                                    <button
+                                        onClick={() => pay()}
+                                        disabled={isInvalid || paying}
+                                        className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-blue-500 px-4 py-3 text-sm font-medium text-white transition hover:from-purple-500 hover:to-blue-400 disabled:cursor-not-allowed disabled:opacity-60"
+                                    >
+                                        {paying ? "Processing..." : "Pay now"}
+                                    </button>
+                                </div>
+
+                                <div className="my-4 text-center text-sm text-slate-400">or choose a quick amount</div>
+
+                                <div className="flex flex-wrap gap-3 justify-between ">
+                                    {quickAmounts.map((amt) => (
+                                        <button
+                                            key={amt}
+                                            className="rounded-xl bg-[#3D3C41] px-4 py-3 text-sm transition hover:bg-slate-600 "
+                                            onClick={() => pay(amt)}
+                                        >
+                                            + ₹{amt}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </section>
             </main>
-
         </>
     )
 }
