@@ -43,57 +43,57 @@ export default function AboutPage() {
           </div>
         </section>
 
-     <section className="bg-slate-800 border border-slate-700 rounded-2xl p-8 shadow-lg mb-10">
-  <h2 className="text-3xl font-bold mb-4 text-center">About the Creator</h2>
-  <div className="max-w-3xl mx-auto text-center">
-    <h3 className="text-2xl font-semibold mb-3 text-purple-400">Deep Singh</h3>
+        <section className="bg-slate-800 border border-slate-700 rounded-2xl p-8 shadow-lg mb-10">
+          <h2 className="text-3xl font-bold mb-4 text-center">About the Creator</h2>
+          <div className="max-w-3xl mx-auto text-center">
+            <h3 className="text-2xl font-semibold mb-3 text-purple-400">Deep Singh</h3>
 
-    <p className="text-slate-300 mb-4">
-      Hi, I’m Deep Singh, the creator of FundRazer. I built this project as part of my
-      journey in web development and full-stack application building.
-    </p>
+            <p className="text-slate-300 mb-4">
+              Hi, I’m Deep Singh, the creator of FundRazer. I built this project as part of my
+              journey in web development and full-stack application building.
+            </p>
 
-    <p className="text-slate-300 mb-4">
-      This website reflects my interest in creating useful platforms with modern
-      technologies such as Next.js, React, authentication systems, database integration,
-      and payment workflows.
-    </p>
+            <p className="text-slate-300 mb-4">
+              This website reflects my interest in creating useful platforms with modern
+              technologies such as Next.js, React, authentication systems, database integration,
+              and payment workflows.
+            </p>
 
-    <p className="text-slate-300">
-      My goal with this project is not only to build a functional crowdfunding platform
-      for creators, but also to improve my skills by working on a real-world product.
-    </p>
+            <p className="text-slate-300">
+              My goal with this project is not only to build a functional crowdfunding platform
+              for creators, but also to improve my skills by working on a real-world product.
+            </p>
 
-    <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
-      <a
-        href="https://instagram.com/your_username"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="bg-pink-600 hover:bg-pink-700 px-5 py-2 rounded-xl font-medium"
-      >
-        Instagram
-      </a>
+            <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a
+                href="https://instagram.com/deepsingh_7505"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-pink-600 hover:bg-pink-700 px-5 py-2 rounded-xl font-medium"
+              >
+                Instagram
+              </a>
 
-      <a
-        href="https://github.com/your_username"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="bg-gray-900 hover:bg-gray-950 px-5 py-2 rounded-xl font-medium"
-      >
-        GitHub
-      </a>
+              <a
+                href="https://github.com/deepsingh7505"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gray-900 hover:bg-gray-950 px-5 py-2 rounded-xl font-medium"
+              >
+                GitHub
+              </a>
 
-      <a
-        href="https://linkedin.com/in/your_username"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="bg-blue-600 hover:bg-blue-700 px-5 py-2 rounded-xl font-medium"
-      >
-        LinkedIn
-      </a>
-    </div>
-  </div>
-</section>
+              <a
+                href="https://linkedin.com/in/deepsingh7505"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-blue-600 hover:bg-blue-700 px-5 py-2 rounded-xl font-medium"
+              >
+                LinkedIn
+              </a>
+            </div>
+          </div>
+        </section>
 
         <section className="text-center">
           <h2 className="text-2xl font-bold mb-3">Explore the platform</h2>
@@ -101,7 +101,7 @@ export default function AboutPage() {
             Visit creators, support their work, and explore how FundRazer is built.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-          
+
             <Link
               href="/"
               className="bg-slate-700 hover:bg-slate-600 px-6 py-3 rounded-xl font-medium"
