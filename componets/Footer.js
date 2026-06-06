@@ -6,6 +6,9 @@ const Footer = () => {
       <div className="max-w-6xl mx-auto px-4 text-center text-sm text-slate-300">
         © {new Date().getFullYear()} FundRazer || Built by Deep Singh
       </div>
+      <div>
+        Contect : deepsingh75053@gmail.com
+      </div>
     </footer>
   )
 }
