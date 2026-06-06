@@ -33,7 +33,7 @@ export default function Home() {
 
           <div className="mb-6 flex flex-col items-center gap-3 sm:flex-row">
             <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-              Buy Me A Chai
+             Fund Razer
             </h1>
             <Image
               src="/tea.gif"
@@ -89,7 +89,7 @@ export default function Home() {
         <div className="mx-auto max-w-6xl">
           <div className="mb-10 text-center">
             <h2 className="text-2xl font-bold sm:text-3xl md:text-4xl">
-              Why creators use Buy Me A Chai
+              Why creators Use FundRazer
             </h2>
             <p className="mx-auto mt-3 max-w-2xl text-sm text-slate-400 sm:text-base">
               Everything is designed to help creators stay focused, receive support, and grow their connection with supporters.
@@ -179,7 +179,7 @@ export default function Home() {
             Ready to support or get supported?
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
-            Join Buy Me A Chai and create a space where your work can be appreciated and funded by the people who care about it.
+            Join FundRazer and create a space where your work can be appreciated and funded by the people who care about it.
           </p>
 
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
