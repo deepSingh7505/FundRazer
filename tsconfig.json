@@ -35,7 +35,7 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "componets/FloatingChatbot.tsx"  ],
+, "componets/FloatingChatbot.js"  ],
   "exclude": [
     "node_modules"
   ]
