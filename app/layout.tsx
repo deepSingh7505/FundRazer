@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/componets/Navbar"
 import Footer from "@/componets/Footer"
 import SessionWrapper from "@/componets/SessionWrapper";
+import Chatbot from "@/componets/FloatingChatbot"
 
 
 
@@ -38,6 +39,7 @@ export default function RootLayout({
 <SessionWrapper>
         <Navbar/>
           {children}
+          <Chatbot/>
         <Footer/>
   </SessionWrapper>
      
