@@ -306,7 +306,7 @@ Your goal: Make FundRazer feel welcoming, easy to use, and trustworthy.
 
 
     const result = streamText({
-      model: groq('openai/gpt-oss-120b'),
+      model: groq('openai/gpt-oss-20b'),
       messages: await convertToModelMessages(messages),
       system: systemPrompt,
     });
