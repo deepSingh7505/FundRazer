@@ -10,7 +10,7 @@ export default function FloatingChatbot() {
   const [input, setInput] = useState('');
   const messagesEndRef = useRef(null);
 
-  const { messages, sendMessage, status, error } = useChat({
+  const { messages, sendMessage, status, error , } = useChat({
     transport: new DefaultChatTransport({
       api: '/api/chat'
     }),
