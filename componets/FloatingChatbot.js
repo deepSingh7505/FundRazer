@@ -10,14 +10,9 @@ export default function FloatingChatbot() {
   const [input, setInput] = useState('');
   const messagesEndRef = useRef(null);
 
-  const { messages, sendMessage, status, error } = useChat({
+  const { messages, sendMessage, status, error , } = useChat({
     transport: new DefaultChatTransport({
-      api: '/api/chat',
-      prepareSendMessagesRequest: ({ messages }) => ({
-        body: {
-        messages,
-        },
-      }),
+      api: '/api/chat'
     }),
     messages: [
       {
@@ -35,6 +30,8 @@ export default function FloatingChatbot() {
       console.error('API Error:', err);
     },
   });
+  const deep = useChat()
+  console.log("deep : " ,deep)
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
