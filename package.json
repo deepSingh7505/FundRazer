@@ -9,13 +9,14 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ai-sdk/amazon-bedrock": "^5.0.2",
     "@ai-sdk/groq": "^3.0.41",
-    "@ai-sdk/react": "^3.0.208",
-    "ai": "^6.0.206",
+    "@ai-sdk/react": "^3.0.216",
+    "ai": "^7.0.4",
     "groq-sdk": "^1.2.1",
     "lucide-react": "^1.20.0",
     "mongoose": "^9.6.2",
-    "next": "16.2.6",
+    "next": "^16.2.9",
     "next-auth": "4.24.14",
     "nodemailer": "^7.0.13",
     "razorpay": "^2.9.6",

@@ -5,6 +5,7 @@ import User from "../../../models/User"
 import Payment from '../../../models/payment';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { bedrock } from '@ai-sdk/amazon-bedrock';
 
 function getErrorMessage(error) {
   if (!error) return 'Unknown error';
@@ -299,7 +300,7 @@ export async function POST(req) {
     }));
 
     const result = streamText({
-      model: groq('llama-3.3-70b-versatile'),
+      model: bedrock("openai.gpt-oss-20b-1:0"),
       system: systemPrompt,
       messages: formattedMessages,
     });
