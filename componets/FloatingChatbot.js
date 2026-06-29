@@ -15,7 +15,7 @@ export default function FloatingChatbot() {
       api: '/api/chat',
       prepareSendMessagesRequest: ({ messages }) => ({
         body: {
-          message: messages[messages.length - 1],
+        messages,
         },
       }),
     }),

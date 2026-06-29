@@ -13,7 +13,14 @@ function getErrorMessage(error) {
 
 export async function POST(req) {
   try {
-    const { message } = await req.json();
+    const { messages } = await req.json();
+
+    if (!Array.isArray(messages)) {
+      return Response.json(
+        { error: 'Messages must be an array' },
+        { status: 400 }
+      );
+    }
 
     await connectDB();
 
@@ -26,7 +33,7 @@ export async function POST(req) {
       .lean();
 
     const systemPrompt = `
-You are a helpful assistant for a creator funding platform.
+    You are a helpful assistant for a creator funding platform.
 
 Use the raw data below to answer questions like:
 - who donated the most
@@ -124,18 +131,25 @@ ${JSON.stringify(user, null, 2)}
 SAFE PAYMENT DATA:
 ${JSON.stringify(payments, null, 2)}
 
- 
+
 `;
+
+    // ✅ Map messages to simple format (no convertToModelMessages)
+    messages.map(e=>console.log(e))
+    const formattedMessages = messages.map(msg => ({
+      role: msg.role,
+      content: msg.parts[0]?.text || '',
+    }));
+   formattedMessages.map(e=>console.log(e))
+    
 
     const result = streamText({
       model: groq('llama-3.3-70b-versatile'),
       system: systemPrompt,
-      prompt: message?.parts?.find(part => part.type === 'text')?.text || '',
+      messages: formattedMessages,
     });
 
-    return result.toUIMessageStreamResponse({
-      getErrorMessage,
-    });
+    return result.toUIMessageStreamResponse();
   } catch (error) {
     console.error('CHAT API ERROR:', error);
     return Response.json(
