@@ -142,6 +142,7 @@ function buildSystemPrompt(isAuthenticated, userContext, paymentContext, message
 export async function POST(req) {
   try {
     const { messages } = await req.json();
+    console.log('Raw messages from frontend:', JSON.stringify(messages, null, 2));
 
     if (!Array.isArray(messages) || messages.length === 0) {
       return Response.json(
@@ -294,16 +295,38 @@ export async function POST(req) {
     // ✅ Build system prompt (no backtick issues)
     const systemPrompt = buildSystemPrompt(isAuthenticated, userContext, paymentContext, messages);
 
-    const formattedMessages = messages.map(msg => ({
-      role: msg.role,
-      content: msg.parts?.[0]?.text || msg.content || '',
-    }));
+   // ✅ FIXED: Collect ALL text from all parts
+const formattedMessages = messages
+  .map(msg => {
+    let content = '';
 
-    const result = streamText({
-      model: bedrock("openai.gpt-oss-20b-1:0"),
-      system: systemPrompt,
-      messages: formattedMessages,
-    });
+    // If it has .content, use it
+    if (msg.content) {
+      content = msg.content;
+    }
+    // Otherwise, extract text from all .parts[]
+    else if (msg.parts && Array.isArray(msg.parts)) {
+      const textParts = msg.parts
+        .filter(part => part.type === 'text' && part.text)
+        .map(part => part.text);
+      
+      content = textParts.join('\n');
+    }
+
+    return {
+      role: msg.role,
+      content: content.trim(), // Remove whitespace
+    };
+  })
+  .filter(msg => msg.content.length > 0); // ✅ Remove truly empty messages
+
+console.log('Formatted messages:', JSON.stringify(formattedMessages, null, 2));
+
+const result = streamText({
+  model: bedrock("openai.gpt-oss-20b-1:0"),
+  system: systemPrompt,
+  messages: formattedMessages,
+});
 
     return result.toUIMessageStreamResponse();
   } catch (error) {
